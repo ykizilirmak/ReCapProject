@@ -17,7 +17,16 @@ namespace Business.Concrete
 
         public void Add(Car car)
         {
-            _carDal.Add(car);
+            if (car.DailyPrice > 0 && car.)
+            {
+                _carDal.Add(car);
+                Console.WriteLine("Arac Sisteme basariyla eklendi.");
+            }
+            else
+            {
+                Console.WriteLine("Lutfen aracin gunluk kirasini sifirdan buyuk bir deger giriniz.");
+            }
+           
         }
 
         public void Delete(Car car)
@@ -32,7 +41,17 @@ namespace Business.Concrete
 
         public Car GetById(int Id)
         {
-           return _carDal.GetById(Id);
+           return _carDal.Get(p => p.Id == Id);
+        }
+
+        public List<Car> GetCarsByBrandId(int id)
+        {
+            return _carDal.GetAll(p=>p.BrandId==id);
+        }
+
+        public List<Car> GetCarsByColorId(int id)
+        {
+            return _carDal.GetAll(p => p.ColorId == id);
         }
 
         public void Update(Car car)
