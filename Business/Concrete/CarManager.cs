@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -17,7 +18,7 @@ namespace Business.Concrete
 
         public void Add(Car car)
         {
-            if (car.DailyPrice > 0 && car.)
+            if (car.DailyPrice > 0 )
             {
                 _carDal.Add(car);
                 Console.WriteLine("Arac Sisteme basariyla eklendi.");
@@ -42,6 +43,16 @@ namespace Business.Concrete
         public Car GetById(int Id)
         {
            return _carDal.Get(p => p.Id == Id);
+        }
+
+        public List<CarDetailDto> GetCarDetails()
+        {
+            return _carDal.GetCarDetails();
+        }
+
+        public List<CarMoreDetailDto> GetCarMoreDetails()
+        {
+            return _carDal.GetCarMoreDetails();
         }
 
         public List<Car> GetCarsByBrandId(int id)
