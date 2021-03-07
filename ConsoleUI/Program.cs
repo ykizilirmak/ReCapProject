@@ -2,6 +2,7 @@
 using DataAccess.Concrete;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
+using Entities.DTOs;
 using System;
 
 namespace ConsoleUI
@@ -12,9 +13,45 @@ namespace ConsoleUI
         {
             //CarManagerTest();
             //CarDtoTest();
-            BrandManagerTest();
+            //BrandManagerTest();
             //ColorMnagerTest();
             //CarDto2Test();
+             CustomerAddingTest();
+
+
+
+            RentalAddingAndListingTest();
+
+        }
+
+        private static void RentalAddingAndListingTest()
+        {
+            RentalManager rentalManager = new RentalManager(new EFRentalDal());
+
+            rentalManager.Add(new Rental { CarId = 3, CustomerId = 4, RentDate = DateTime.Now, ReturnDate = DateTime.Today });
+            foreach (var rentaldetail in rentalManager.GetRentalDetails().Data)
+            {
+                Console.WriteLine(rentaldetail.RentalId + "/" + rentaldetail.CarName + "/" + rentaldetail.BrandName + "/" + rentaldetail.ColorName + "/" +
+                rentaldetail.CustomerName + "/" + rentaldetail.CustomerLastName + "/" + rentaldetail.RentDate + "/" + rentaldetail.ReturnDate + "/" + rentaldetail.CompanyName);
+            }
+        }
+
+        private static void CustomerAddingTest()
+        {
+            UserManager userManager = new UserManager(new EFUserDal());
+            User user1 = new User() { FirstName = "Ali", LastName = "Kınalı", Email = "Is", Password = "123" };
+            userManager.Add(user1);
+
+            CustomerManager customerManager = new CustomerManager(new EFCustomerDal());
+            Customer customer1 = new Customer() { UserId = user1.Id, CompanyName = " Microsoft" };
+            customerManager.Add(customer1);
+
+
+            Console.WriteLine("Müşteri eklendikten  sonra database durumu");
+            foreach (var customerdetail in customerManager.GetCustomerDetails().Data)
+            {
+                Console.WriteLine(customerdetail.CustomerId + "/" + customerdetail.FirstName + "/" + customerdetail.LastName + "/" + customerdetail.Email + "/" + customerdetail.CompanyName);
+            }
         }
 
         private static void CarDto2Test()
@@ -82,18 +119,18 @@ namespace ConsoleUI
         {
             CarManager carManager = new CarManager(new EFCarDal());
             var result = carManager.GetAll(); // Genel kullanım bu şekilde olacak fakat bununiçinde iki farklı return oldugu için zaten newlememiz lazım diğerleri tek return .
-            if (result.Success) 
+            if (result.Success)
             {
                 foreach (var car in result.Data)
                 {
                     Console.WriteLine(car.Id + "/" + car.BrandId + "/" + car.ColorId + "/" + car.DailyPrice + "/" + car.Description + "/" + car.ModelYear);
                 }
             }
-            else 
+            else
             {
                 Console.WriteLine(result.Message);
             }
-            
+
 
             foreach (var car in carManager.GetCarsByBrandId(1).Data)
             {
@@ -129,6 +166,6 @@ namespace ConsoleUI
         }
 
 
-       
+
     }
 }
