@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -19,7 +20,7 @@ namespace Business.Concrete
         {
             _carDal = carDal;
         }
-
+        [ValidationAspect(typeof(CarValidator))]  //BU işlemin gerçekleşmesi için autofacbusinessmodule e kontrol için kod parçası ekledik
         public IResult Add(Car car)
         {
             //AOP İLE YAPMADAN ÖNCE VALİDASYONU BU ŞEKİLDE UYGULADIK CORE KATMANINDA VAL. TOOL İLE YAPTIK---  ValidationTool.Validate(new CarValidator(), car);
@@ -69,7 +70,7 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.ColorId == id));
         }
-
+        [ValidationAspect(typeof(CarValidator))]
         public IResult Update(Car car)
         {
             _carDal.Update(car);
