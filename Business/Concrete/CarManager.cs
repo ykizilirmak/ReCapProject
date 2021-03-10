@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
+using Business.ValidationRules.FluentValidation_paket_;
+using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -20,16 +22,11 @@ namespace Business.Concrete
 
         public IResult Add(Car car)
         {
-            if (car.DailyPrice > 0 )
-            {
-                _carDal.Add(car);
-                return new SuccessResult(Messages.CarAdded);
-            }
-            else
-            {
-                return new ErrorResult(Messages.CarDailyPriceInvalid);
-            }
-           
+            //AOP İLE YAPMADAN ÖNCE VALİDASYONU BU ŞEKİLDE UYGULADIK CORE KATMANINDA VAL. TOOL İLE YAPTIK---  ValidationTool.Validate(new CarValidator(), car);
+            _carDal.Add(car);
+            return new SuccessResult(Messages.CarAdded);
+
+
         }
 
         public IResult Delete(Car car)
@@ -40,17 +37,17 @@ namespace Business.Concrete
 
         public IDataResult<List<Car>> GetAll()
         {
-            if (DateTime.Now.Hour == 01) 
+            if (DateTime.Now.Hour == 01)
             {
                 return new ErrorDataResult<List<Car>>(Messages.MaintenanceTime);
             }
-                return new SuccessDataResult<List<Car>>(_carDal.GetAll(),Messages.CarsListed);
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
         }
 
 
         public IDataResult<Car> GetById(int Id)
         {
-           return new SuccessDataResult<Car>(_carDal.Get(p => p.Id == Id));
+            return new SuccessDataResult<Car>(_carDal.Get(p => p.Id == Id));
         }
 
         public IDataResult<List<CarDetailDto>> GetCarDetails()
@@ -65,7 +62,7 @@ namespace Business.Concrete
 
         public IDataResult<List<Car>> GetCarsByBrandId(int id)
         {
-            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p=>p.BrandId==id));
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(p => p.BrandId == id));
         }
 
         public IDataResult<List<Car>> GetCarsByColorId(int id)
