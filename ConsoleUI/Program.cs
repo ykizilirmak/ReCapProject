@@ -43,7 +43,7 @@ namespace ConsoleUI
             userManager.Add(user1);
 
             CustomerManager customerManager = new CustomerManager(new EFCustomerDal());
-            Customer customer1 = new Customer() { UserId = user1.Id, CompanyName = " Microsoft" };
+            Customer customer1 = new Customer() { UserId = user1.Id, CompanyName = " Microsoft" };//foreign kısıtlamasıyla birlikte olmayan user id kabul etmiyor ve userı silerken de kontrol mekanizması giriyor.
             customerManager.Add(customer1);
 
 

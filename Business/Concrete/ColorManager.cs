@@ -37,9 +37,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Color>>(_colorDal.GetAll());
         }
 
-        public IDataResult<Color> GetById(int Id)
+        public IDataResult<Color> GetById(int id)
         {
-            return new SuccessDataResult<Color>(_colorDal.Get(p => p.Id == Id));
+            return new SuccessDataResult<Color>(_colorDal.Get(p => p.Id == id));
         }
         [ValidationAspect(typeof(ColorValidator))]
         public IResult Update(Color color)
